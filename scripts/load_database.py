@@ -13,11 +13,14 @@ def load_db():
     processed_dir = Path('../data/processed')
 
     table_mapping ={
-        'dim_fund' : raw_dir/'01_fund_master.csv',
+        'dim_fund' : processed_dir/'processed_01_fund_master.csv',
         'fact_nav' : processed_dir/'clean_nav_history.csv',
         'fact_transactions':processed_dir/'clean_investor_transactions.csv',
         'fact_performance':processed_dir/'clean_scheme_performance.csv',
-        'fact_aum' : raw_dir/'03_aum_by_fund_house.csv'
+        'fact_aum' : processed_dir/'processed_03_aum_by_fund_house.csv',
+        'fact_industry_folio': processed_dir / 'processed_06_industry_folio_count.csv',
+        'fact_portfolio_holdings': processed_dir / 'processed_09_portfolio_holdings.csv'
+
     }
 
     for table,file_path in table_mapping.items():
