@@ -57,7 +57,7 @@ To objectively rank the 40 mutual fund schemes, a standardized 0-100 scoring sys
 │   ├── raw/                 # Original CSV datasets
 │   ├── processed/           # Cleaned CSVs and final scorecard exports
 │   └── db/                  # SQLite database (blue_mf.db)
-├── images/                  # Exported PNGs and interactive charts
+├── reports/images/                  # Exported PNGs and interactive charts
 ├── notebooks/
 │   ├── 01_data_cleaning.ipynb
 │   ├── 02_db_ingestion.ipynb
