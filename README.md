@@ -1,68 +1,72 @@
-# Indian Mutual Fund Analytics & Quantitative Scorecard
+# BlueStack Mutual Fund Analytics Capstone
 
-## 📌 Project Overview
-This project is an end-to-end data engineering and quantitative analytics pipeline for the Indian Mutual Fund industry. It processes raw transactional and NAV data across 40 mutual fund schemes (2022–2026) to generate interactive exploratory data visualizations and compute advanced financial performance metrics.
+## Project Overview
+This capstone project establishes a secure, end-to-end data pipeline and unified business intelligence environment designed to process raw transactional and performance metrics across 40 distinct mutual fund schemes spanning 10 major AMCs[cite: 1]. It addresses massive data fragmentation in the Indian Mutual Fund industry by programmatically cleaning data, calculating advanced risk-adjusted metrics, and identifying at-risk investor cohorts[cite: 1]. 
 
-The final deliverable is a **Composite Fund Scorecard (0-100)** that ranks funds based on a weighted matrix of CAGR, Sharpe Ratio, Alpha, Expense Ratios, and Maximum Drawdowns.
+The core output is a Composite Fund Scorecard that provides an unbiased, multi-factor framework for evaluating scheme health based on a strict matrix: 30% 3-Year CAGR, 25% Sharpe Ratio, 20% Benchmark Alpha, 15% Inverse Expense Ratio, and 10% Inverse Maximum Drawdown[cite: 1].
 
-## 🛠️ Tech Stack
-* **Language:** Python 3.10+
-* **Database:** SQLite3
-* **Data Processing:** Pandas, NumPy
-* **Quantitative Analysis:** SciPy (`scipy.stats`)
-* **Data Visualization:** Matplotlib, Seaborn, Plotly
+## Dataset Descriptions
+The pipeline ingests raw data from primary financial authorities like AMFI and NSE, consisting of the following core files[cite: 1]:
 
-## 📂 Project Architecture
+*   **`01_fund_master.csv` (Scheme Metadata):** Contains the static reference data for the 40 mutual fund schemes, including attributes like the `amfi_code`, scheme category, SEBI risk grade, and total expense ratio (TER)[cite: 1].
+*   **`02_nav_history.csv` (Pricing Time-Series):** The heaviest dataset, logging the daily Net Asset Value (NAV) prices for every scheme[cite: 1].
+*   **`03_investor_transactions.csv` (Behavioral Logs):** A detailed ledger of retail capital movement that records user IDs, transaction dates, investment types (SIP vs. Lumpsum), and capital amounts[cite: 1].
+*   **`04_benchmark_indices.csv` (Market Baselines):** Tracks the daily closing prices of the Nifty 50 index, which acts as the fundamental baseline for all comparative benchmarking (Alpha and Beta calculations)[cite: 1].
+*   **`9_portfolio_holdings.csv` (Asset Allocation):** Details the internal composition of each mutual fund, mapping exact percentage allocations to specific market sectors[cite: 1].
 
-### Phase 1: Data Engineering & Ingestion (Days 1 & 2)
-* Designed a relational dimensional model (Fact and Dimension tables).
-* Cleaned and normalized raw CSV datasets (handling missing values, standardizing dates, and mapping categorical data).
-* Built an automated Python ingestion script (`load_db.py`) using SQLAlchemy to populate the SQLite database (`blue_mf.db`).
-
-### Phase 2: Exploratory Data Analysis (Day 3)
-* **AUM & Market Share:** Grouped bar charting of fund house dominance (e.g., SBI's ₹12.5L Cr AUM).
-* **Investor Demographics:** Visualized age brackets, gender splits, and geographic (T30 vs B30) distribution.
-* **Trend Analysis:** Mapped the exponential industry folio growth and plotted interactive time-series for monthly SIP inflows (highlighting the ₹31,002 Cr all-time high).
-* **Correlation:** Generated a pairwise NAV return correlation matrix (Heatmap) to identify portfolio overlap risk.
-
-### Phase 3: Quantitative Performance Analytics (Day 4)
-* **Return Metrics:** Calculated Daily Returns and 1-yr, 3-yr, and 5-yr Compound Annual Growth Rates (CAGR).
-* **Risk Metrics:** Computed standard deviation, Sharpe Ratio (using a 6.5% risk-free proxy), and Sortino Ratio.
-* **Alpha & Beta:** Ran OLS regression on daily fund returns against Nifty market benchmarks to extract $\alpha$ and $\beta$ coefficients.
-* **Drawdown Analysis:** Identified the Maximum Drawdown (Max DD) and worst-case drop scenarios for every fund.
-
-## 📊 The Composite Fund Scorecard
-To objectively rank the 40 mutual fund schemes, a standardized 0-100 scoring system was engineered using the following percentile weightings:
-* **30%** - 3-Year CAGR Rank
-* **25%** - Sharpe Ratio Rank
-* **20%** - Alpha Rank
-* **15%** - Expense Ratio Rank (Inverse)
-* **10%** - Maximum Drawdown Rank (Inverse)
-
-## 🚀 How to Run the Project
-1. Clone the repository to your local machine.
-2. Install the required dependencies:
-   ```bash
-   pip install pandas numpy matplotlib seaborn plotly scipy sqlalchemy
-   ```
-3. Run the database ingestion script from the root directory:
-   ```bash
-   python load_db.py
-   ```
-4. Open the Jupyter Notebooks in the /notebooks directory sequentially (01_... to 04_...) to reproduce the data cleaning, EDA, and quantitative analytics.
-
-## 📁 Repository Structure
+## Project Structure
 ```text
 ├── data/
-│   ├── raw/                 # Original CSV datasets
-│   ├── processed/           # Cleaned CSVs and final scorecard exports
-│   └── db/                  # SQLite database (blue_mf.db)
-├── reports/images/                  # Exported PNGs and interactive charts
-├── notebooks/
-│   ├── 01_data_cleaning.ipynb
-│   ├── 02_db_ingestion.ipynb
-│   ├── 03_eda_analysis.ipynb
-│   └── 04_performance_analytics.ipynb
-├── load_db.py               # Automated SQL ingestion script
-└── README.md                # Project documentation
+│   ├── raw/                   # Original CSV datasets (01_fund_master.csv, etc.)
+│   ├── processed/             # Cleaned CSVs and intermediate files
+│   └── db/                    # SQLite database (blue_mf.db)              
+├── reports/images/                  
+├── notebooks/                 # Jupyter Notebooks for EDA and analytics
+├── scripts/                   # Exported visuals and PNGs
+│   ├── 01_data_ingestion.py   # Automated data cleaning script
+│   ├── 02_data_cleaning.py    # Star Schema generation script
+│   └── load_database.py       # SQLite database loader        
+├── run_pipeline.py            # Master ETL orchestrator
+└── README.md                  # Project documentation
 ```
+## Setup Instructions
+1. **Clone the Repository:**
+```bash
+    git clone [https://github.com/devkumar2313/bluestock_mf_capstone.git](https://github.com/devkumar2313/bluestock_mf_capstone.git)
+    cd bluestock_mf_capstone
+```
+2.  **Create a Virtual Environment (Optional but Recommended):**
+```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows use: venv\Scripts\activate
+```
+3.  **Install Dependencies:**
+Ensure you have the required Python libraries installed:
+```bash
+    pip install pandas numpy matplotlib seaborn sqlalchemy sqlite3
+```
+4.  **Verify Data Placement:**
+    Ensure your raw CSV datasets are securely placed inside the `data/raw/` directory.
+
+## How to Run the ETL Pipeline
+The entire Extract, Transform, and Load (ETL) process has been automated using a strict-path orchestration script.
+
+1.  Open your terminal and ensure you are in the project's root directory.
+2.  Execute the master pipeline script:
+```bash
+    python run_pipeline.py
+```
+3.  **Pipeline Execution Flow:** The script will automatically trigger:
+    *   `01_data_ingestion.py`: Prepares the dimensional and fact table structures for the relational database[cite: 1].
+    *   `02_data_cleaning.py`: Handles deduplication, data type casting, and algorithmically forward-fills missing NAV dates for weekends/holidays[cite: 1].
+    *   `load_database.py`: Ingests the cleaned data into the `blue_mf.db` SQLite database using a highly optimized Star Schema model[cite: 1]. 
+
+## How to Open the Dashboard
+The presentation layer is built in Microsoft Power BI, utilizing a direct Business Intelligence connection to the generated SQLite database[cite: 1].
+
+1.  Ensure you have completed the ETL pipeline steps above so the `blue_mf.db` file is fully populated in the `data/db/` folder.
+2.  Open **Microsoft Power BI Desktop**.
+3.  Open the project's `.pbix` dashboard file.
+4.  If required, click **Refresh** in the Power BI ribbon. The dashboard will instantly query the SQLite Star Schema, ensuring lightning-fast updates for the Macro Industry tracking, Quantitative Performance Engine, and Behavioral Analytics pages without manual data manipulation[cite: 1].
+
+***
