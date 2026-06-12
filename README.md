@@ -17,16 +17,16 @@ The pipeline ingests raw data from primary financial authorities like AMFI and N
 ## Project Structure
 ```text
 ├── data/
-│   ├── raw/                   # Original CSV datasets (01_fund_master.csv, etc.)
+│   ├── raw/                   # Original CSV datasets
 │   ├── processed/             # Cleaned CSVs and intermediate files
-│   └── db/                    # SQLite database (blue_mf.db)              
-├── reports/images/                  
+│   └── db/                    # SQLite database (blue_mf.db)
+├── reports/images/               
 ├── notebooks/                 # Jupyter Notebooks for EDA and analytics
-├── scripts/                   # Exported visuals and PNGs
+├── scripts/                   
 │   ├── 01_data_ingestion.py   # Automated data cleaning script
 │   ├── 02_data_cleaning.py    # Star Schema generation script
-│   └── load_database.py       # SQLite database loader        
-├── run_pipeline.py            # Master ETL orchestrator
+│   ├── load_database.py       # SQLite database loader
+│   └── run_pipeline.py        # Master ETL orchestrator
 └── README.md                  # Project documentation
 ```
 ## Setup Instructions
